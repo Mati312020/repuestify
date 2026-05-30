@@ -11,12 +11,14 @@ export interface SearchResult {
   priceARS: number
   availability: Availability
   url: string
+  searchUrl?: string      // fallback search URL (ML catalog links)
   thumbnail?: string
   sellerName?: string
   sellerRating?: number
   condition: 'new' | 'used' | 'refurbished'
   validationCount: number
   isValidated: boolean
+  isCatalogLink?: boolean // true = links to catalog page, price shown there
 }
 
 export interface SearchParams {

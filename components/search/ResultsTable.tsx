@@ -127,15 +127,25 @@ export function ResultsTable({ results, vehicleInfo, partQuery }: ResultsTablePr
                   <Badge variant="info">{SOURCE_LABELS[result.source] ?? result.source}</Badge>
                 </td>
                 <td className="px-4 py-3 text-right">
-                  <span className="text-base font-bold text-gray-900">{formatARS(result.priceARS)}</span>
-                  {result.currency === 'USD' && (
-                    <p className="text-xs text-gray-400">USD {result.price.toFixed(2)}</p>
+                  {result.isCatalogLink ? (
+                    <span className="text-sm text-primary-600 font-medium">Ver en ML →</span>
+                  ) : (
+                    <>
+                      <span className="text-base font-bold text-gray-900">{formatARS(result.priceARS)}</span>
+                      {result.currency === 'USD' && (
+                        <p className="text-xs text-gray-400">USD {result.price.toFixed(2)}</p>
+                      )}
+                    </>
                   )}
                 </td>
                 <td className="px-4 py-3">
-                  <Badge variant={result.availability === 'in_stock' ? 'success' : 'warning'}>
-                    {result.availability === 'in_stock' ? 'Disponible' : 'Sin stock'}
-                  </Badge>
+                  {result.isCatalogLink ? (
+                    <Badge variant="info">Catálogo ML</Badge>
+                  ) : (
+                    <Badge variant={result.availability === 'in_stock' ? 'success' : 'warning'}>
+                      {result.availability === 'in_stock' ? 'Disponible' : 'Sin stock'}
+                    </Badge>
+                  )}
                 </td>
                 <td className="px-4 py-3">
                   {result.isValidated ? (
@@ -178,15 +188,23 @@ export function ResultsTable({ results, vehicleInfo, partQuery }: ResultsTablePr
                 <p className="text-sm font-medium text-gray-900 line-clamp-2">{result.title}</p>
                 <div className="flex items-center gap-2 mt-1 flex-wrap">
                   <Badge variant="info" size="sm">{SOURCE_LABELS[result.source] ?? result.source}</Badge>
-                  <Badge variant={result.availability === 'in_stock' ? 'success' : 'warning'} size="sm">
-                    {result.availability === 'in_stock' ? 'Disponible' : 'Sin stock'}
-                  </Badge>
+                  {result.isCatalogLink ? (
+                    <Badge variant="default" size="sm">Catálogo ML</Badge>
+                  ) : (
+                    <Badge variant={result.availability === 'in_stock' ? 'success' : 'warning'} size="sm">
+                      {result.availability === 'in_stock' ? 'Disponible' : 'Sin stock'}
+                    </Badge>
+                  )}
                 </div>
               </div>
             </div>
             <div className="flex items-center justify-between mt-3">
               <div>
-                <p className="text-lg font-bold text-gray-900">{formatARS(result.priceARS)}</p>
+                {result.isCatalogLink ? (
+                  <p className="text-sm text-gray-500">Precio en Mercado Libre</p>
+                ) : (
+                  <p className="text-lg font-bold text-gray-900">{formatARS(result.priceARS)}</p>
+                )}
                 {result.isValidated && (
                   <p className="text-xs text-green-700 flex items-center gap-1">
                     <CheckCircle className="w-3 h-3" />
@@ -201,7 +219,7 @@ export function ResultsTable({ results, vehicleInfo, partQuery }: ResultsTablePr
                 className="inline-flex items-center gap-1.5 bg-primary-600 hover:bg-primary-700 text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors"
               >
                 <ShoppingCart className="w-4 h-4" />
-                Ver oferta
+                {result.isCatalogLink ? 'Ver precios' : 'Ver oferta'}
               </a>
             </div>
           </div>
